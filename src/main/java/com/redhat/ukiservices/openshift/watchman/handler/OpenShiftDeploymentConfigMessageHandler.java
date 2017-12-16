@@ -45,14 +45,16 @@ public class OpenShiftDeploymentConfigMessageHandler implements MessageHandler.W
 
             if (cType.equalsIgnoreCase(ConditionTypeEnum.AVAILABLE.toString())) {
                 if (cStatus) {
-                    logger.info(String.format("DeploymentConfig %s is READY - %d out of %d replicas available. %n Message: %s",
-                            metadata.get("name").getAsString(),
+                    logger.info(String.format("Project: %s - DeploymentConfig %s is READY - %d out of %d replicas available. %n Message: %s",
+                            metadata.get("namespace").getAsString().toUpperCase(),
+                            metadata.get("name").getAsString().toUpperCase(),
                             availableReplicas,
                             requiredReplicas,
                             cMessage));
                 } else {
-                    logger.log(Level.WARNING, String.format("DeploymentConfig %s is NOT READY - %d out of %d replicas available. %n Message: %s",
-                            metadata.get("name").getAsString(),
+                    logger.log(Level.WARNING, String.format("Project %s - DeploymentConfig %s is NOT READY - %d out of %d replicas available. %n Message: %s",
+                            metadata.get("namespace").getAsString().toUpperCase(),
+                            metadata.get("name").getAsString().toUpperCase(),
                             availableReplicas,
                             requiredReplicas,
                             cMessage));

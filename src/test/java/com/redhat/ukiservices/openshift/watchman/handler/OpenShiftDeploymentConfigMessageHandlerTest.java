@@ -37,7 +37,8 @@ public class OpenShiftDeploymentConfigMessageHandlerTest {
                 "    \"kind\":\"DeploymentConfig\",\n" +
                 "    \"apiVersion\":\"v1\",\n" +
                 "    \"metadata\":{\n" +
-                "      \"name\":\"eap-app\"\n" +
+                "      \"name\":\"eap-app\",\n" +
+                "      \"namespace\":\"unit-test\"\n" +
                 "    },\n" +
                 "    \"status\":{\n" +
                 "      \"latestVersion\":1,\n" +
@@ -86,7 +87,8 @@ public class OpenShiftDeploymentConfigMessageHandlerTest {
                 "    \"kind\":\"DeploymentConfig\",\n" +
                 "    \"apiVersion\":\"v1\",\n" +
                 "    \"metadata\":{\n" +
-                "      \"name\":\"eap-app\"\n" +
+                "      \"name\":\"eap-app\",\n" +
+                "      \"namespace\":\"unit-test\"\n" +
                 "    },\n" +
                 "    \"status\":{\n" +
                 "      \"latestVersion\":1,\n" +
