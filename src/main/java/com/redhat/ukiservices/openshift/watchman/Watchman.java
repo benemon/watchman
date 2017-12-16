@@ -2,7 +2,6 @@ package com.redhat.ukiservices.openshift.watchman;
 
 import com.redhat.ukiservices.openshift.watchman.configuration.OpenShiftClientEndpointConfig;
 import com.redhat.ukiservices.openshift.watchman.endpoint.OpenShiftClientEndpoint;
-import com.redhat.ukiservices.openshift.watchman.handler.OpenShiftDeploymentConfigMessageHandler;
 import io.undertow.websockets.jsr.DefaultWebSocketClientSslProvider;
 
 import javax.net.ssl.SSLContext;
@@ -19,8 +18,10 @@ public class Watchman {
 
     private static final String OPENSHIFT_WEBSOCKET_URI_ENV = "OPENSHIFT_WEBSOCKET_URI";
     private static final String OPENSHIFT_WEBSOCKET_TIMEOUT_ENV = "OPENSHIFT_WEBSOCKET_TIMEOUT";
+    private static final String OPENSHIFT_WEBSOCKET_TOKEN_ENV = "OPENSHIFT_WEBSOCKET_TOKEN";
+
     private static final String OPENSHIFT_WEBSOCKET_URI_DEFAULT = "wss://192.168.99.100:8443/oapi/v1/deploymentconfigs?watch=true";
-    private static final String OPENSHIFT_WEBSOCKET_TIMEOUT_DEFAULT = "600000";
+    private static final String OPENSHIFT_WEBSOCKET_TIMEOUT_DEFAULT = "60000";
 
     public static void main(String[] args) {
         try {
@@ -28,22 +29,19 @@ public class Watchman {
 
             String uri = System.getenv(OPENSHIFT_WEBSOCKET_URI_ENV) != null ? System.getenv(OPENSHIFT_WEBSOCKET_URI_ENV) : OPENSHIFT_WEBSOCKET_URI_DEFAULT;
             Long timeout = Long.parseLong(System.getenv(OPENSHIFT_WEBSOCKET_TIMEOUT_ENV) != null ? System.getenv(OPENSHIFT_WEBSOCKET_TIMEOUT_ENV) : OPENSHIFT_WEBSOCKET_TIMEOUT_DEFAULT);
+            String token = System.getenv(OPENSHIFT_WEBSOCKET_TOKEN_ENV);
 
-            logger.info("Connecting to " + uri);
+            logger.info(String.format("Connecting to %s ", uri));
 
             // Create a custom Configuration object to hold our Bearer token
-            ClientEndpointConfig config = ClientEndpointConfig.Builder.create().configurator(new OpenShiftClientEndpointConfig()).build();
+            ClientEndpointConfig config = ClientEndpointConfig.Builder.create().configurator(new OpenShiftClientEndpointConfig(token)).build();
 
             // Set the SSL context after adding the OpenShift certificate to the java default keystore
             SSLContext sslContext = SSLContext.getInstance("TLS");
             sslContext.init(null, null, null);
-
             config.getUserProperties().put(DefaultWebSocketClientSslProvider.SSL_CONTEXT, sslContext);
 
-            Session session = container.connectToServer(new OpenShiftClientEndpoint(), config, URI.create(uri));
-            session.setMaxIdleTimeout(timeout);
-            session.addMessageHandler(new OpenShiftDeploymentConfigMessageHandler());
-
+            Session session = container.connectToServer(new OpenShiftClientEndpoint(timeout), config, URI.create(uri));
             while (session.isOpen()) {
             }
 

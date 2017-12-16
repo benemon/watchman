@@ -1,5 +1,7 @@
 package com.redhat.ukiservices.openshift.watchman.endpoint;
 
+import com.redhat.ukiservices.openshift.watchman.handler.OpenShiftDeploymentConfigMessageHandler;
+
 import javax.websocket.CloseReason;
 import javax.websocket.Endpoint;
 import javax.websocket.EndpointConfig;
@@ -13,12 +15,19 @@ public class OpenShiftClientEndpoint extends Endpoint {
     private static Logger logger = Logger.getLogger(OpenShiftClientEndpoint.class.getName());
 
     private Session session;
+    private long timeout;
+
+    public OpenShiftClientEndpoint(long timeout) {
+        this.timeout = timeout;
+    }
 
     @Override
     public void onOpen(Session session, EndpointConfig endpointConfig) {
         logger.log(Level.INFO, String.format("Connected to endpoint: %s", session.getBasicRemote()));
 
         this.session = session;
+        this.session.setMaxIdleTimeout(timeout);
+        this.session.addMessageHandler(new OpenShiftDeploymentConfigMessageHandler());
     }
 
     @Override

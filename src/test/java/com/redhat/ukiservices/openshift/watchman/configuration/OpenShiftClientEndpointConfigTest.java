@@ -14,7 +14,7 @@ public class OpenShiftClientEndpointConfigTest {
     @Test
     public void beforeRequest() {
         Map<String, List<String>> headers = new HashMap<>();
-        OpenShiftClientEndpointConfig config = new OpenShiftClientEndpointConfig();
+        OpenShiftClientEndpointConfig config = new OpenShiftClientEndpointConfig("2wdr4QFgDTHZqh_eb9waIrPeYUS7IBhJ3QOwS7qhZmY");
         config.beforeRequest(headers);
 
         assertEquals(headers.size(), 1);
