@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Deployment
+metadata:
+  name: ${project.artifactId}
+spec:
+  template:
+    spec:
+      containers:
+        - resources:
+            limits:
+              cpu: 500m
+              memory: 384Mi
+            requests:
+              cpu: 50m
+              memory: 128Mi
+          env:
+            - name: JAVA_OPTIONS
+              value: "-Djavax.net.ssl.trustStore=/home/jboss/jssecacerts -D-Djavax.net.ssl.trustStorePassword=changeit"
+            - name: OPENSHIFT_WEBSOCKET_URI
+              value: 'wss://172.30.0.1:443/oapi/v1/deploymentconfigs?watch=true'
+            - name: OPENSHIFT_WEBSOCKET_TIMEOUT
+              value: '60000'
+          volumeMounts:
+            - mountPath: /home/jboss/
+              name: truststore
+              readOnly: true
+      volumes:
+        - name: truststore
+          secret:
+            defaultMode: 420
+            secretName: truststore
+      serviceAccount: watchman

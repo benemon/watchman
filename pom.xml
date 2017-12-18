@@ -132,6 +132,7 @@
                     <plugin>
                         <groupId>io.fabric8</groupId>
                         <artifactId>fabric8-maven-plugin</artifactId>
+                        <version>3.5.32.fuse-000021</version>
                         <executions>
                             <execution>
                                 <id>fmp</id>
@@ -141,6 +142,9 @@
                                 </goals>
                             </execution>
                         </executions>
+                        <configuration>
+
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
