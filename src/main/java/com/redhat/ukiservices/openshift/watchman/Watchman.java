@@ -8,7 +8,6 @@ import javax.net.ssl.SSLContext;
 import javax.websocket.*;
 import java.io.IOException;
 import java.net.URI;
-import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,9 +35,8 @@ public class Watchman {
             // Create a custom Configuration object to hold our Bearer token
             ClientEndpointConfig config = ClientEndpointConfig.Builder.create().configurator(new OpenShiftClientEndpointConfig(token)).build();
 
-            // Set the SSL context after adding the OpenShift certificate to the java default keystore
-            SSLContext sslContext = SSLContext.getInstance("TLS");
-            sslContext.init(null, null, null);
+            // Set the SSL context after adding the OpenShift certificate to the java default truststore / using a custom truststore
+            SSLContext sslContext = SSLContext.getDefault();
             config.getUserProperties().put(DefaultWebSocketClientSslProvider.SSL_CONTEXT, sslContext);
 
             Session session = container.connectToServer(new OpenShiftClientEndpoint(timeout), config, URI.create(uri));
@@ -49,8 +47,8 @@ public class Watchman {
                 logger.log(Level.WARNING, String.format("Session timed out after %dms", session.getMaxIdleTimeout()));
             }
 
-        } catch (DeploymentException | IOException | NoSuchAlgorithmException | KeyManagementException ex) {
-            logger.log(Level.SEVERE, null, ex);
+        } catch (DeploymentException | IOException | NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 }
