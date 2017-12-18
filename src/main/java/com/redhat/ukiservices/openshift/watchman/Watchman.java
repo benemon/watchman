@@ -17,18 +17,18 @@ import java.util.logging.Logger;
 
 import static com.redhat.ukiservices.openshift.watchman.common.CommonConstants.*;
 
-public class Watchman {
+class Watchman {
     private static final Logger logger = Logger.getLogger(Watchman.class.getName());
 
-    private String uri;
-    private Long timeout;
+    private final String uri;
+    private final Long timeout;
 
     public Watchman() {
         this.uri = System.getenv(OPENSHIFT_WEBSOCKET_URI_ENV) != null ? System.getenv(OPENSHIFT_WEBSOCKET_URI_ENV) : OPENSHIFT_WEBSOCKET_URI_DEFAULT;
         this.timeout = Long.parseLong(System.getenv(OPENSHIFT_WEBSOCKET_TIMEOUT_ENV) != null ? System.getenv(OPENSHIFT_WEBSOCKET_TIMEOUT_ENV) : OPENSHIFT_WEBSOCKET_TIMEOUT_DEFAULT);
     }
 
-    public void watch() {
+    private void watch() {
         try {
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
 
@@ -43,6 +43,7 @@ public class Watchman {
 
             Session session = container.connectToServer(new OpenShiftClientEndpoint(timeout), config, URI.create(uri));
             while (session.isOpen()) {
+                // deliberately empty
             }
 
             if (!session.isOpen()) {

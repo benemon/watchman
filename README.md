@@ -23,5 +23,7 @@
 Configuration is achieved through Environment Variables, which are all fairly self-explanatory:
 
 * OPENSHIFT_WEBSOCKET_URI - The URI to connect to. Outside OpenShift, this defaults to wss://192.168.99.100:8443/oapi/v1/deploymentconfigs?watch=true. Inside, it defaults to wss://172.30.0.1:443/oapi/v1/deploymentconfigs?watch=true
-* OPENSHIFT_WEBSOCKET_TIMEOUT - Time in millseconds before the websocket connection is dropped, and the program exits. Defaults to 60000ms (60 seconds).
+
+* OPENSHIFT_WEBSOCKET_TIMEOUT - Time in millseconds before the websocket connection is dropped, and the program exits. Defaults to 600000ms (10 minutes).
+
 * OPENSHIFT_WEBSOCKET_TOKEN - When outside OpenShift, allows a Bearer token to be presented for the purposes of authentication against the OpenShift API.

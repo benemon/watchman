@@ -13,9 +13,9 @@ import java.util.logging.Logger;
 
 public class OpenShiftDeploymentConfigMessageHandler implements MessageHandler.Whole<String> {
 
-    private static Logger logger = Logger.getLogger(OpenShiftClientEndpoint.class.getName());
+    private static final Logger logger = Logger.getLogger(OpenShiftClientEndpoint.class.getName());
 
-    private JsonParser jParser;
+    private final JsonParser jParser;
 
     public OpenShiftDeploymentConfigMessageHandler() {
         jParser = new JsonParser();

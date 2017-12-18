@@ -1,7 +1,7 @@
 package com.redhat.ukiservices.openshift.watchman.model;
 
 public enum ConditionTypeEnum {
-    AVAILABLE("Available"), PROGRESSING("Progressing");
+    AVAILABLE("Available");
 
     private final String text;
 
@@ -9,9 +9,9 @@ public enum ConditionTypeEnum {
     /**
      * Private constructor for String enum
      *
-     * @param text
+     * @param text of enum
      */
-    private ConditionTypeEnum(final String text) {
+    ConditionTypeEnum(final String text) {
         this.text = text;
     }
 

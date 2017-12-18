@@ -12,10 +12,10 @@ import java.util.logging.Logger;
 
 public class OpenShiftClientEndpoint extends Endpoint {
 
-    private static Logger logger = Logger.getLogger(OpenShiftClientEndpoint.class.getName());
+    private static final Logger logger = Logger.getLogger(OpenShiftClientEndpoint.class.getName());
 
     private Session session;
-    private long timeout;
+    private final long timeout;
 
     public OpenShiftClientEndpoint(long timeout) {
         this.timeout = timeout;

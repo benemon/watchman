@@ -19,7 +19,7 @@ spec:
             - name: OPENSHIFT_WEBSOCKET_URI
               value: 'wss://172.30.0.1:443/oapi/v1/deploymentconfigs?watch=true'
             - name: OPENSHIFT_WEBSOCKET_TIMEOUT
-              value: '60000'
+              value: '600000'
           volumeMounts:
             - mountPath: /home/jboss/
               name: truststore
