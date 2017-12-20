@@ -6,7 +6,7 @@
 
 * Install either Minishift / Red Hat Container Developer Toolkit / OpenShift Container Platform / OpenShift Origin
 
-* Use this [brilliant little tool](https://github.com/escline/InstallCert) to extract the self-signed cert for your OpenShift and create a truststore
+* Use this [brilliant little tool](https://github.com/escline/InstallCert) to extract the self-signed cert for your OpenShift environment and create a truststore
 
 * Create a secret from this truststore in your OpenShift project: `oc create secret generic truststore --from-file=jssecacerts`
 
@@ -27,3 +27,9 @@ Configuration is achieved through Environment Variables, which are all fairly se
 * OPENSHIFT_WEBSOCKET_TIMEOUT - Time in millseconds before the websocket connection is dropped, and the program exits. Defaults to 600000ms (10 minutes).
 
 * OPENSHIFT_WEBSOCKET_TOKEN - When outside OpenShift, allows a Bearer token to be presented for the purposes of authentication against the OpenShift API.
+
+
+#### ToDo
+
+* Format the output nicely and dump it into something Grafana can parse
+* Add Rules to interpret the conditions of the deployment
