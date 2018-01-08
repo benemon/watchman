@@ -1,6 +1,6 @@
 # Watchman
 
-### A PoC Java Websockets client to watch for changes on the OpenShift API
+### A PoC Vert.x Websockets client to watch for changes on the OpenShift API
 
 #### Setup
 

@@ -47,7 +47,7 @@ public class InfluxDBVerticle extends AbstractVerticle {
 
         JsonObject state = jsonObjectMessage.body();
         JsonObject replicas = state.getJsonObject("replicas");
-        
+
         vertx.executeBlocking(future -> {
                     InfluxDB influxDB = InfluxDBFactory.connect(String.format("http://%s:%s", influxDbHost, influxDbPort));
                     influxDB.enableBatch(100, 100, TimeUnit.MILLISECONDS, Executors.defaultThreadFactory(), (failedPoints, throwable) -> {
