@@ -50,9 +50,7 @@ public class InfluxDBVerticle extends AbstractVerticle {
 
         vertx.executeBlocking(future -> {
                     InfluxDB influxDB = InfluxDBFactory.connect(String.format("http://%s:%s", influxDbHost, influxDbPort));
-                    influxDB.enableBatch(100, 100, TimeUnit.MILLISECONDS, Executors.defaultThreadFactory(), (failedPoints, throwable) -> {
-                        future.fail(throwable);
-                    });
+                    influxDB.enableBatch(100, 100, TimeUnit.MILLISECONDS, Executors.defaultThreadFactory(), (failedPoints, throwable) -> future.fail(throwable));
                     influxDB.setDatabase(influxDbDatabase);
 
                     Point point = Point.measurement("replicas")

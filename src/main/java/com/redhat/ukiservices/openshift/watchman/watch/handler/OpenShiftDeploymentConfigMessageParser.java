@@ -110,7 +110,7 @@ public class OpenShiftDeploymentConfigMessageParser {
     }
 
     private static long getTimestampFromString(String dateString) {
-        long timestamp = 0l;
+        long timestamp;
 
         logger.debug("Input:" + dateString);
 

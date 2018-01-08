@@ -65,7 +65,7 @@ public class WatchmanVerticle extends AbstractVerticle {
     /**
      * Handle the message from the websocket by performing ETL and converting to a nicer format for the EB
      *
-     * @param buffer
+     * @param buffer the Buffer containing the message from the server
      */
     private void handle(Buffer buffer) {
         try {
@@ -82,7 +82,7 @@ public class WatchmanVerticle extends AbstractVerticle {
     /**
      * Publish JsonObject to the EB
      *
-     * @param stateChange
+     * @param stateChange the object representing the new DC state
      */
     private void publishStateChange(JsonObject stateChange) {
         vertx.eventBus().send(CommonConstants.INFLUXDB_PERSISTENCE_ADDDRESS, stateChange);
