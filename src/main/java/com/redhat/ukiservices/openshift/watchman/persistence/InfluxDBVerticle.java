@@ -2,6 +2,8 @@ package com.redhat.ukiservices.openshift.watchman.persistence;
 
 import com.redhat.ukiservices.openshift.watchman.common.CommonConstants;
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Context;
+import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.eventbus.MessageConsumer;
 import io.vertx.core.json.JsonObject;
@@ -18,12 +20,13 @@ public class InfluxDBVerticle extends AbstractVerticle {
 
     private static final Logger logger = LoggerFactory.getLogger(InfluxDBVerticle.class);
 
-
     private String influxDbHost;
     private String influxDbPort;
     private String influxDbDatabase;
 
-    public InfluxDBVerticle() {
+    @Override
+    public void init(Vertx vertx, Context context) {
+        super.init(vertx, context);
 
         influxDbHost = System.getenv(CommonConstants.INFLUXDB_SERVICE_HOST_ENV) != null ? System.getenv(CommonConstants.INFLUXDB_SERVICE_HOST_ENV) : CommonConstants.INFLUXDB_SERVICE_HOST_DEFAULT;
         influxDbPort = System.getenv(CommonConstants.INFLUXDB_SERVICE_PORT_ENV) != null ? System.getenv(CommonConstants.INFLUXDB_SERVICE_PORT_ENV) : CommonConstants.INFLUXDB_SERVICE_PORT_DEFAULT;
@@ -44,8 +47,7 @@ public class InfluxDBVerticle extends AbstractVerticle {
 
         JsonObject state = jsonObjectMessage.body();
         JsonObject replicas = state.getJsonObject("replicas");
-
-
+        
         vertx.executeBlocking(future -> {
                     InfluxDB influxDB = InfluxDBFactory.connect(String.format("http://%s:%s", influxDbHost, influxDbPort));
                     influxDB.enableBatch(100, 100, TimeUnit.MILLISECONDS, Executors.defaultThreadFactory(), (failedPoints, throwable) -> {
