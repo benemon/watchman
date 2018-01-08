@@ -3,11 +3,27 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
+    <parent>
+        <groupId>io.openshift</groupId>
+        <artifactId>booster-parent</artifactId>
+        <version>13</version>
+    </parent>
     <groupId>com.redhat.ukiservices.openshift</groupId>
     <artifactId>watchman</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.vertx</groupId>
+                <artifactId>vertx-dependencies</artifactId>
+                <version>${vertx.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -18,38 +34,25 @@
 
         <powermock.version>1.7.3</powermock.version>
         <mockito.version>2.8.9</mockito.version>
+
+        <vertx.version>3.5.0</vertx.version>
+        <vertx-maven-plugin.version>1.0.13</vertx-maven-plugin.version>
+        <vertx.verticle>com.redhat.ukiservices.openshift.watchman.bootstrap.BootstrapVerticle</vertx.verticle>
     </properties>
 
     <dependencies>
 
+        <!-- Vertx -->
         <dependency>
-            <groupId>javax.websocket</groupId>
-            <artifactId>javax.websocket-api</artifactId>
-            <version>${websocket-api.version}</version>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-core</artifactId>
         </dependency>
 
+        <!-- InfluxDB -->
         <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>${gson.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.undertow</groupId>
-            <artifactId>undertow-core</artifactId>
-            <version>${undertow.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.undertow</groupId>
-            <artifactId>undertow-servlet</artifactId>
-            <version>${undertow.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.undertow</groupId>
-            <artifactId>undertow-websockets-jsr</artifactId>
-            <version>${undertow.version}</version>
+            <groupId>org.influxdb</groupId>
+            <artifactId>influxdb-java</artifactId>
+            <version>2.8</version>
         </dependency>
 
         <!-- Test frameworks -->
@@ -80,41 +83,16 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.6.0</version>
+                <groupId>io.fabric8</groupId>
+                <artifactId>vertx-maven-plugin</artifactId>
+                <version>${vertx-maven-plugin.version}</version>
                 <executions>
                     <execution>
+                        <id>vmp</id>
                         <goals>
-                            <goal>java</goal>
+                            <goal>initialize</goal>
+                            <goal>package</goal>
                         </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <mainClass>com.redhat.ukiservices.openshift.watchman.Watchman</mainClass>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <configuration>
-                            <archive>
-                                <manifest>
-                                    <mainClass>
-                                        com.redhat.ukiservices.openshift.watchman.Watchman
-                                    </mainClass>
-                                </manifest>
-                            </archive>
-                            <descriptorRefs>
-                                <descriptorRef>jar-with-dependencies</descriptorRef>
-                            </descriptorRefs>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -132,7 +110,6 @@
                     <plugin>
                         <groupId>io.fabric8</groupId>
                         <artifactId>fabric8-maven-plugin</artifactId>
-                        <version>3.5.32.fuse-000021</version>
                         <executions>
                             <execution>
                                 <id>fmp</id>
@@ -143,7 +120,16 @@
                             </execution>
                         </executions>
                         <configuration>
-
+                            <enricher>
+                                <excludes>
+                                    <exclude>f8-maven-scm</exclude>
+                                </excludes>
+                                <config>
+                                    <vertx-health-check>
+                                        <path>/health</path>
+                                    </vertx-health-check>
+                                </config>
+                            </enricher>
                         </configuration>
                     </plugin>
                 </plugins>

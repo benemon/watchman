@@ -1,5 +1,7 @@
-package com.redhat.ukiservices.openshift.watchman.handler;
+package com.redhat.ukiservices.openshift.watchman.watch.handler;
 
+import io.vertx.core.json.JsonObject;
+import io.vertx.core.logging.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,29 +9,24 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({OpenShiftDeploymentConfigMessageHandler.class, Logger.class})
-public class OpenShiftDeploymentConfigMessageHandlerTest {
+@PrepareForTest({OpenShiftDeploymentConfigMessageParser.class, Logger.class})
+public class OpenShiftDeploymentConfigMessageParserTest {
 
-    private OpenShiftDeploymentConfigMessageHandler handler;
+    private OpenShiftDeploymentConfigMessageParser handler;
 
     @Before
     public void before() throws Exception {
-        handler = new OpenShiftDeploymentConfigMessageHandler();
+        handler = new OpenShiftDeploymentConfigMessageParser();
     }
 
     @Test
     public void onMessageAvailable() throws Exception {
-
-        Logger logger = mock(Logger.class);
-        Whitebox.setInternalState(OpenShiftDeploymentConfigMessageHandler.class, "logger", logger);
 
         String data = "{\n" +
                 "  \"type\":\"MODIFIED\",\n" +
@@ -69,17 +66,25 @@ public class OpenShiftDeploymentConfigMessageHandlerTest {
                 "  }\n" +
                 "}";
 
-        handler.onMessage(data);
+        JsonObject obj = new JsonObject(data);
+        Optional<JsonObject> stateChange = handler.parseMessage(obj);
 
-        verify(logger).info(anyString());
-        verify(logger).info(contains("Deployment config has minimum availability"));
+        assertEquals(true, stateChange.isPresent());
+
+        JsonObject state = stateChange.get();
+
+        JsonObject replicas = state.getJsonObject("replicas");
+
+        assertEquals(2, replicas.getInteger("available").longValue());
+
+        System.out.println(state.encodePrettily());
     }
 
     @Test
     public void onMessageUnavailable() throws Exception {
 
         Logger logger = mock(Logger.class);
-        Whitebox.setInternalState(OpenShiftDeploymentConfigMessageHandler.class, "logger", logger);
+        Whitebox.setInternalState(OpenShiftDeploymentConfigMessageParser.class, "logger", logger);
 
         String data = "{\n" +
                 "  \"type\":\"MODIFIED\",\n" +
@@ -119,9 +124,15 @@ public class OpenShiftDeploymentConfigMessageHandlerTest {
                 "  }\n" +
                 "}";
 
-        handler.onMessage(data);
+        JsonObject obj = new JsonObject(data);
+        Optional<JsonObject> stateChange = handler.parseMessage(obj);
 
-        verify(logger).log(eq(Level.WARNING), anyString());
-        verify(logger).log(eq(Level.WARNING), contains("Deployment config does not have minimum availability"));
+        assertEquals(true, stateChange.isPresent());
+
+        JsonObject state = stateChange.get();
+
+        JsonObject replicas = state.getJsonObject("replicas");
+
+        assertEquals(0, replicas.getInteger("available").longValue());
     }
 }

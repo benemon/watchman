@@ -2,11 +2,22 @@ package com.redhat.ukiservices.openshift.watchman.common;
 
 public interface CommonConstants {
 
-    String OPENSHIFT_WEBSOCKET_URI_ENV = "OPENSHIFT_WEBSOCKET_URI";
-    String OPENSHIFT_WEBSOCKET_TIMEOUT_ENV = "OPENSHIFT_WEBSOCKET_TIMEOUT";
-    String OPENSHIFT_WEBSOCKET_TOKEN_ENV = "OPENSHIFT_WEBSOCKET_TOKEN";
+    String KUBERNETES_HOST_ENV = "KUBERNETES_SERVICE_HOST";
+    String KUBERNETES_HOST_DEFAULT = "192.168.99.100";
+    String KUBERNETES_PORT_ENV = "KUBERNETES_SERVICE_PORT";
+    String KUBERNETES_PORT_DEFAULT = "8443";
 
-    String OPENSHIFT_WEBSOCKET_URI_DEFAULT = "wss://192.168.99.100:8443/oapi/v1/deploymentconfigs?watch=true";
-    String OPENSHIFT_WEBSOCKET_TIMEOUT_DEFAULT = "600000";
+    String OPENSHIFT_API_ENDPOINT = "/oapi/v1/deploymentconfigs?watch=true";
+
+
+    String KUBERNETES_AUTH_TOKEN_ENV = "KUBERNETES_AUTH_TOKEN";
     String DEFAULT_TOKEN_PATH = "/run/secrets/kubernetes.io/serviceaccount/token";
+
+    String INFLUXDB_PERSISTENCE_ADDDRESS = "influxdb.persist";
+    String INFLUXDB_SERVICE_HOST_ENV = "INFLUXDB_SERVICE_HOST";
+    String INFLUXDB_SERVICE_HOST_DEFAULT = "localhost";
+    String INFLUXDB_SERVICE_PORT_ENV = "INFLUXDB_SERVICE_PORT";
+    String INFLUXDB_SERVICE_PORT_DEFAULT = "8086";
+    String INFLUXDB_DATABASE_ENV = "INFLUXDB_DATABASE";
+    String INFLUXDB_DATABASE_DEFAULT = "openshift";
 }
