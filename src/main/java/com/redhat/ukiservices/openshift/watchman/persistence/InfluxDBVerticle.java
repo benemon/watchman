@@ -54,7 +54,7 @@ public class InfluxDBVerticle extends AbstractVerticle {
 
         if (influxDbPort.equalsIgnoreCase(CommonConstants.EMPTY_STRING) || influxDbHost.equalsIgnoreCase(CommonConstants.EMPTY_STRING) || influxDbDatabase.equalsIgnoreCase(CommonConstants.EMPTY_STRING)) {
             if (latch.getCount() == 1) {
-                logger.warn(String.format("InfluxDB connection error. Make sure %s,%s, and %s are set correctly:",
+                logger.warn(String.format("InfluxDB connection error. Make sure %s,%s, and %s are set correctly.",
                         CommonConstants.INFLUXDB_SERVICE_HOST_ENV,
                         CommonConstants.INFLUXDB_SERVICE_PORT_ENV,
                         CommonConstants.INFLUXDB_DATABASE_ENV));
