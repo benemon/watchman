@@ -18,11 +18,13 @@
 
 Configuration is achieved through Environment Variables, which are all fairly self-explanatory:
 
-* KUBERNETES_SERVICE_HOST - The Host to connect to. Outside OpenShift, this defaults to https://192.168.99.100:8443/. Inside, it defaults to https://172.30.0.1:443/.
+* KUBERNETES_SERVICE_HOST - The Host to connect to. Outside OpenShift, this defaults to https://192.168.99.100:8443/.
 
-* KUBERNETES_SERVICE_PORT - The Port to connect to.
+* KUBERNETES_SERVICE_PORT - The Port to connect to. Defaults to 8443.
 
 * KUBERNETES_AUTH_TOKEN - The Token to use for authentication. Can be either a service account, or the result of `oc whoami -t`.
+
+**NOTE: When running inside OpenShift, these values will be set implicitly. There is no need to set them manually**
 
 In addition, to push the data gathered to InfluxDB (for future use in Grafana Dashboards), configure the following:
 
