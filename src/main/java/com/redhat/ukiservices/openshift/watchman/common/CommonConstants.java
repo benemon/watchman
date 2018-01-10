@@ -15,9 +15,7 @@ public interface CommonConstants {
 
     String INFLUXDB_PERSISTENCE_ADDDRESS = "influxdb.persist";
     String INFLUXDB_SERVICE_HOST_ENV = "INFLUXDB_SERVICE_HOST";
-    String INFLUXDB_SERVICE_HOST_DEFAULT = "localhost";
     String INFLUXDB_SERVICE_PORT_ENV = "INFLUXDB_SERVICE_PORT";
-    String INFLUXDB_SERVICE_PORT_DEFAULT = "8086";
     String INFLUXDB_DATABASE_ENV = "INFLUXDB_DATABASE";
-    String INFLUXDB_DATABASE_DEFAULT = "openshift";
+    String EMPTY_STRING = "";
 }

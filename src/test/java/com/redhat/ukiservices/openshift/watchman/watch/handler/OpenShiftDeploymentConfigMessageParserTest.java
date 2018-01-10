@@ -76,8 +76,6 @@ public class OpenShiftDeploymentConfigMessageParserTest {
         JsonObject replicas = state.getJsonObject("replicas");
 
         assertEquals(2, replicas.getInteger("available").longValue());
-
-        System.out.println(state.encodePrettily());
     }
 
     @Test

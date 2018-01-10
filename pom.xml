@@ -48,6 +48,11 @@
             <artifactId>vertx-core</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-health-check</artifactId>
+        </dependency>
+
         <!-- InfluxDB -->
         <dependency>
             <groupId>org.influxdb</groupId>
