@@ -49,3 +49,7 @@ time                available deployment      project   required unavailable
 1515164747000000000 2         eap-app         myproject 3        1
 
 ```
+
+If no configuration is found, the payload will still get logged, but you should see a message similar to the following in the console:
+
+`WARNING: InfluxDB connection error. Make sure INFLUXDB_SERVICE_HOST,INFLUXDB_SERVICE_PORT, and INFLUXDB_DATABASE are set correctly`
